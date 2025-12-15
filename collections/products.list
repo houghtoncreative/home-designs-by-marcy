@@ -1,0 +1,148 @@
+<div id="plans-directory">
+    <div class='plans-list-wrapper'>
+      {.repeated section items}
+            <div class="plan" data-item-id="{id}">
+              <span style="display:none" class="summary-metadata-item summary-metadata-item--categories">
+            	{.repeated section categories}{@}{.alternates with}, {.end}
+            </span>
+            <span style="display:none" class="summary-metadata-item summary-metadata-item--tags">
+            {.repeated section tags}{@}{.alternates with}, {.end}
+            </span>
+            <a href="{fullUrl}"><div class="image-wrapper content-fill"><img {@|image-meta} /></div></a>
+              <div class="meta">
+                  <a href="{fullUrl}"><h3 class="publication-title">{title}</h3></a>
+                <ul>
+                  {.repeated section variants}{.section attributes}<li title="Area: {Area} sq Ft."><i class="fas fa-expand-arrows-alt"></i><span>{Area} Sq Ft.</span></li>{.end}{.end}
+                {.repeated section variants}{.section attributes}<li title="{Bedrooms} Bedrooms"><i class="fas fa-bed"></i><span>{Bedrooms}</span></li>{.end}{.end}
+  {.repeated section variants}{.section attributes}<li title="{Bathrooms} Bathrooms"><i class="fas fa-bath"></i><span>{Bathrooms}</span></li>{.end}{.end}
+{.repeated section categories}{.equal? "Garage"}<li title="{@} Garage"><i class="fas fa-car"></i><span><i class="fas fa-check"></i></span></li>{.or}{.end}{.end}
+{.repeated section variants}{.section attributes}<li title="{Stories} Stories"><i class="fas fa-sort-amount-up-alt"></i><span>{Stories}</span></li>{.end}{.end}
+</ul>
+              </div>
+            </div>
+              {.end}
+    </div>
+  </div>
+    {.repeated section items}
+  <div style="display:none">{.repeated section variants}{attributes.MaxWidth},{.end}</div>
+  <div style="display:none">{.repeated section variants}{attributes.MaxDepth},{.end}</div>
+  {.end}
+
+  <script>
+window.customFilterSettings = {
+    'targets': [{
+        container: '#plans-directory',
+        items: '.plan',
+        settings: {
+          sort: {
+            enabled: true,
+            defined: 'date_desc',
+            items: [
+              {
+              name: 'Alphabetical',
+                  order: 'asc|desc',
+                  orderTexts: 'A-Z|Z-A',
+                  hideName: true,
+                  sort: '.publication-title'
+            }
+          ]
+        },
+            position: 'right',
+            align: 'left',
+            collectionUrl: '/plans|/plans-2|/plans-3|/plans-4',
+            accordionDropdowns: true,
+            showCheckboxes: true, // show the styled checkboxes with options
+            showItemsCount: false,
+            keepDropdownsOpen: true,
+            keepDropdownsOpenOnInit: true, // make dropdowns opened on start but ready to close on click
+            closeOptionsOnSelect: false,
+            view: 'dropdowns',
+            mobilePanel: { // control if you want to have separate offscreen panel with filters on small screens
+                   enabled: false, // if set to false, no filter buttons on mobiles will be showed
+               },
+            filter: {
+                enabled: true,
+                category: false,
+                tag: false,
+                cacheOptions: false, // cache options for fast build and show dropdowns even if items data not received yet
+                items: [
+                  {
+                   name: 'Area',
+                   type: 'range-slider',
+                   dimension: 'Sq Ft.',// show dimension near tooltips or inputs
+                   min: 0, //will be set according to lowest price
+                   max: 8000, //will be set according to highest price
+                   step: 100,// a step to change price
+                   showLabel: true, // show or hide name
+                   showTooltips: true,// show or hide tooltips
+                   showInputs: true,// show or hide editable inputs under slider
+                   format: 'nFormatter|2',
+                   getAttr: 'variant|Area'
+               },
+               {
+                name: 'Max Depth',
+                type: 'range-slider',
+                dimension: 'Ft.',// show dimension near tooltips or inputs
+                min: 0, //will be set according to lowest price
+                max: 200, //will be set according to highest price
+                step: 1,// a step to change price
+                showLabel: true, // show or hide name
+                showTooltips: true,// show or hide tooltips
+                showInputs: true,// show or hide editable inputs under slider
+                format: 'nFormatter|2',
+                getAttr: 'variant|MaxDepth'
+            },
+            {
+             name: 'Max Width',
+             type: 'range-slider',
+             dimension: 'Ft.',// show dimension near tooltips or inputs
+             min: 0, //will be set according to lowest price
+             max: 200, //will be set according to highest price
+             step: 1,// a step to change price
+             showLabel: true, // show or hide name
+             showTooltips: true,// show or hide tooltips
+             showInputs: true,// show or hide editable inputs under slider
+             format: 'nFormatter|2',
+             getAttr: 'variant|MaxWidth'
+         },
+                  {
+                    name: "Bedrooms",//dropdown name
+                    multiple: true,//allow to select several categories
+                    showItemsCount: false,
+                    getAttr: 'variant|Bedrooms'
+                },
+                {
+                    name: "Bathrooms",//dropdown name
+                    multiple: true,
+                    showItemsCount: false,
+                    getAttr: 'variant|Bathrooms'
+                },
+                {
+                  name: "Stories",//dropdown name
+                  multiple: true,//allow to select several categories
+                  showItemsCount: false,
+                  getAttr: 'variant|Stories'
+              },
+               {
+                    name: "Garage Options",//dropdown name
+                    multiple: true,
+                    allowedOptions: "Front-entry, Side-entry, Back-entry, J-Drive, Bonus-room, Mudroom, Balcony",
+                    getAttr: 'categories'
+                },
+               {
+                    name: "Options",//dropdown name
+                    multiple: true,
+                    allowedOptions: "Barndominium, Study",
+                    getAttr: 'categories'
+                }
+              ]
+            },
+            updateFilterOptions: {
+                   enabled: true, //enable options update
+                   showOptionsCounters: true, // if true - you will see a number of available items there
+                   optionsCounterWrap: '- ()', // available items number will be pasted inside circle brackets
+               },
+        }
+    }]
+};
+</script>

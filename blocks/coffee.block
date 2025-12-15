@@ -1,0 +1,356 @@
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+<section id="map-section">
+  <div class="map-wrapper">
+    <div class='sidebar'>
+      <div class='heading'>
+        <h2>The Journey</h2>
+        <span class="instructions" style="display:none;">Tap for more information</span>
+      </div>
+      <div class="listings-wrapper"><div id='listings' class='listings {.section item.customContent.coffeeGPS7Lat}long{.or}{.end}'></div></div>
+    </div>
+    <div id='map' class='map'></div>
+  </div>
+  </section>
+  <script>
+$('.sidebar').click( function() {
+    $(".sidebar").toggleClass("hide-menu");
+} );
+</script>
+    <script>
+      // This will let you use the .remove() function later on
+      if (!('remove' in Element.prototype)) {
+        Element.prototype.remove = function() {
+          if (this.parentNode) {
+              this.parentNode.removeChild(this);
+          }
+        };
+      }
+
+      mapboxgl.accessToken = 'pk.eyJ1IjoiaG91Z2h0b25kZXNpZ24iLCJhIjoiY2ltY3Fva2EyMDAyaXVpa2tzMzFhbWFnMCJ9.PMBuSUkzGOikg15cDSgnnA';
+      /**
+       * Add the map to the page
+      */
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [-95.46738511104186, 23.167128571296345],
+        zoom: {.section item.customContent.coffeeZoom}{@}{.or}4{.end},
+        scrollZoom: true,
+      });
+      // Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+      var stores = {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS1Lat},
+                {item.customContent.coffeeGPS1Lng}
+              ]
+            },
+            "properties": {
+              "address": "Farm",
+              "country": "{item.customContent.coffeeFarmLocation}",
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS2Lat},
+                {item.customContent.coffeeGPS2Lng}
+              ]
+            },
+            "properties": {
+              "address": "Mill",
+              "country": "{item.customContent.coffeeMillLocation}",
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS3Lat},
+                {item.customContent.coffeeGPS3Lng}
+              ]
+            },
+            "properties": {
+              "address": "Export",
+              "country": "{item.customContent.coffeeExportedLocation}",
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS4Lat},
+                {item.customContent.coffeeGPS4Lng}
+              ]
+            },
+            "properties": {
+              "address": "Logistics",
+              "country": "{item.customContent.coffeeShippedLocation}",
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS5Lat},
+                {item.customContent.coffeeGPS5Lng}
+              ]
+            },
+            "properties": {
+              "address": "Import",
+              "country": "{item.customContent.coffeeImportedLocation}",
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS6Lat},
+                {item.customContent.coffeeGPS6Lng}
+              ]
+            },
+            "properties": {
+              "address": "Roaster",
+              "country": "{item.customContent.coffeeDestinationLocation}",
+            }
+          }{.section item.customContent.coffeeGPS7Lat},
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                {item.customContent.coffeeGPS7Lat},
+                {item.customContent.coffeeGPS7Lng}
+              ]
+            },
+            "properties": {
+              "address": "Retail",
+              "country": "{item.customContent.coffeeRetailLocation}",
+            }
+          }{.or}{.end}
+        ]
+      };
+
+      /**
+       * Assign a unique id to each store. You'll use this `id`
+       * later to associate each point on the map with a listing
+       * in the sidebar.
+      */
+      stores.features.forEach(function(store, i){
+        store.properties.id = i;
+      });
+
+      /**
+       * Wait until the map loads to make changes to the map.
+      */
+      map.on('load', function (e) {
+        /**
+         * This is where your '.addLayer()' used to be, instead
+         * add only the source without styling a layer
+        */
+        map.addSource("places", {
+          "type": "geojson",
+          "data": stores
+        });
+
+
+        /**
+         * Add all the things to the page:
+         * - The location listings on the side of the page
+         * - The markers onto the map
+        */
+        buildLocationList(stores);
+        addMarkers();
+      });
+
+      /**
+       * Add a marker to the map for every store listing.
+      **/
+      function addMarkers() {
+        /* For each feature in the GeoJSON object above: */
+        stores.features.forEach(function(marker) {
+          /* Create a div element for the marker. */
+          var el = document.createElement('div');
+          /* Assign a unique `id` to the marker. */
+          el.id = "marker-" + marker.properties.id;
+          /* Assign the `marker` class to each marker for styling. */
+          el.className = 'marker';
+
+          /**
+           * Create a marker using the div element
+           * defined above and add it to the map.
+          **/
+          new mapboxgl.Marker(el, { offset: [0, -23] })
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
+
+          /**
+           * Listen to the element and when it is clicked, do three things:
+           * 1. Fly to the point
+           * 2. Close all other popups and display popup for clicked store
+           * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+          **/
+          el.addEventListener('click', function(e){
+            /* Fly to the point */
+            flyToStore(marker);
+            /* Close all other popups and display popup for clicked store */
+            createPopUp(marker);
+            /* Highlight listing in sidebar */
+            var activeItem = document.getElementsByClassName('active');
+            e.stopPropagation();
+            if (activeItem[0]) {
+              activeItem[0].classList.remove('active');
+            }
+            var listing = document.getElementById('listing-' + marker.properties.id);
+            listing.classList.add('active');
+            return false;
+          });
+        });
+      }
+
+      /**
+       * Add a listing for each store to the sidebar.
+      **/
+      function buildLocationList(data) {
+        data.features.forEach(function(store, i){
+          /**
+           * Create a shortcut for `store.properties`,
+           * which will be used several times below.
+          **/
+          var prop = store.properties;
+
+          /* Add a new listing section to the sidebar. */
+          var listings = document.getElementById('listings');
+          var listing = listings.appendChild(document.createElement('div'));
+          /* Assign a unique `id` to the listing. */
+          listing.id = "listing-" + prop.id;
+          /* Assign the `item` class to each listing for styling. */
+          listing.className = 'item';
+
+          /* Add the link to the individual listing created above. */
+          var link = listing.appendChild(document.createElement('a'));
+          link.href = '#/';
+          link.className = 'title';
+          link.id = "link-" + prop.id;
+          link.innerHTML = prop.address;
+
+          /* Add details to the individual listing. */
+          var details = listing.appendChild(document.createElement('div'));
+          details.innerHTML = prop.country;
+          if (prop.phone) {
+            details.innerHTML += ' · ' + prop.phoneFormatted;
+          }
+
+          /**
+           * Listen to the element and when it is clicked, do four things:
+           * 1. Update the `currentFeature` to the store associated with the clicked link
+           * 2. Fly to the point
+           * 3. Close all other popups and display popup for clicked store
+           * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+          **/
+          link.addEventListener('click', function(e){
+            for (var i=0; i < data.features.length; i++) {
+              if (this.id === "link-" + data.features[i].properties.id) {
+                var clickedListing = data.features[i];
+                flyToStore(clickedListing);
+                createPopUp(clickedListing);
+              }
+            }
+            var activeItem = document.getElementsByClassName('active');
+            if (activeItem[0]) {
+              activeItem[0].classList.remove('active');
+            }
+            this.parentNode.classList.add('active');
+          });
+        });
+      }
+
+      /**
+       * Use Mapbox GL JS's `flyTo` to move the camera smoothly
+       * a given center point.
+      **/
+      function flyToStore(currentFeature) {
+        map.flyTo({
+          center: currentFeature.geometry.coordinates,
+          zoom: 10
+        });
+      }
+
+      /**
+       * Create a Mapbox GL JS `Popup`.
+      **/
+      function createPopUp(currentFeature) {
+        var popUps = document.getElementsByClassName('mapboxgl-popup');
+        if (popUps[0]) popUps[0].remove();
+        var popup = new mapboxgl.Popup({closeOnClick: false})
+          .setLngLat(currentFeature.geometry.coordinates)
+          .setHTML('<h4>' + currentFeature.properties.address + '</h4>' +
+            '<p>' + currentFeature.properties.country + '</p>')
+          .addTo(map);
+      }
+
+      map.on('load', function () {
+      map.addSource('route', {
+      'type': 'geojson',
+      'data': {
+      'type': 'Feature',
+      'properties': {},
+      'geometry': {
+      'type': 'LineString',
+      'coordinates': [
+      [{item.customContent.coffeeGPS1Lat},{item.customContent.coffeeGPS1Lng}],
+      [{item.customContent.coffeeGPS2Lat},{item.customContent.coffeeGPS2Lng}],
+      [{item.customContent.coffeeGPS3Lat},{item.customContent.coffeeGPS3Lng}],
+      [{item.customContent.coffeeGPS4Lat},{item.customContent.coffeeGPS4Lng}],
+      [{item.customContent.coffeeGPS5Lat},{item.customContent.coffeeGPS5Lng}],
+      [{item.customContent.coffeeGPS6Lat},{item.customContent.coffeeGPS6Lng}],
+      {.section item.customContent.coffeeGPS7Lat}[{item.customContent.coffeeGPS7Lat},{item.customContent.coffeeGPS7Lng}]{.or}{.end}
+      ]
+      }
+      }
+      });
+      map.addLayer({
+      'id': 'route',
+      'type': 'line',
+      'source': 'route',
+      'layout': {
+      'line-join': 'round',
+      'line-cap': 'round'
+      },
+      'paint': {
+      'line-color': '#d9aa78',
+      'line-width': 8
+      }
+      });
+      });
+
+    </script>
+<script>
+// Load all images via Squarespace's Responsive ImageLoader
+function loadAllImages() {
+  var images = document.querySelectorAll('img[data-src]' );
+  for (var i = 0; i < images.length; i++) {
+    ImageLoader.load(images[i], {load: true});
+  }
+}
+
+// The event subscription that loads images when the page is ready
+document.addEventListener('DOMContentLoaded', loadAllImages);
+
+// The event subscription that reloads images on resize
+window.addEventListener('resize', loadAllImages);
+</script>

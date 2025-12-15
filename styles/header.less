@@ -271,17 +271,17 @@
 }
 .mixin-header-nav-style(@option) when (@option = fade) {
   .Header-nav-item:hover { .alpha-color(@link-color, 0.4); }
-  .Header-nav-folder-item:hover, .Header-nav-folder-item:focus-within { .alpha-color(@folder-link-color, 0.4); }
+  .Header-nav-folder-item:hover { .alpha-color(@folder-link-color, 0.4); }
 }
 .mixin-header-nav-style(@option) when (@option = spotlight) {
   &:hover .Header-nav-item { .alpha-color(@link-color, 0.4); }
   &:hover .Header-nav-item:hover { color: @link-color; }
   .Header-nav-folder-item { .alpha-color(@folder-link-color, 0.4); }
-  .Header-nav-folder-item:hover, .Header-nav-folder-item:focus-within { color: @folder-link-color; }
+  .Header-nav-folder-item:hover { color: @folder-link-color; }
 }
 .mixin-header-nav-style(@option) when (@option = active) {
   .Header-nav-item:hover { color: @active-link-color; }
-  .Header-nav-folder-item:hover, .Header-nav-folder-item:focus-within { color: @active-link-color; }
+  .Header-nav-folder-item:hover { color: @active-link-color; }
   .Header-nav-item--active,
   .Header-nav-folder-title--active,
   .Header-nav-folder-item--active {
@@ -410,6 +410,7 @@
 
   &-folder {
     .border-box();
+
     position: absolute;
     top: 100%;
     left: -99999px;
@@ -433,8 +434,7 @@
 
   }
 
-  &-item--folder:hover &-folder,
-  &-item--folder:focus-within &-folder:focus-within {
+  &-item--folder:hover &-folder {
     left: 0;
     opacity: 1;
     .transform(translate3d(0, 0, 0));

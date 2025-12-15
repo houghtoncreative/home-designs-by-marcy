@@ -1,0 +1,112 @@
+<div id="plans-directory">
+    <div class='plans-list-wrapper'>
+      {.repeated section items}
+            <div class="plan" data-item-id="{id}">
+              <span style="display:none" class="summary-metadata-item summary-metadata-item--categories">
+            	{.repeated section categories}{@}{.alternates with}, {.end}
+            </span>
+            <span style="display:none" class="summary-metadata-item summary-metadata-item--tags">
+            {.repeated section tags}{@}{.alternates with}, {.end}
+            </span>
+            <a href="{fullUrl}"><div class="image-wrapper content-fill">{.section customContent.plansImage}<img {@|image-meta} />{.end}</div></a>
+              <div class="meta">
+                  <a href="{fullUrl}"><h3 class="publication-title">{title}</h3></a>
+                {.section customContent}
+                <ul>
+                  {.section plansArea}<li title="Area: {@} Sq Ft."><i class="fas fa-expand-arrows-alt"></i><span>{@} Sq Ft.</span></li>{.end}
+                {.section plansBedrooms}<li title="{@} Bedrooms"><i class="fas fa-bed"></i><span>{@}</span></li>{.end}
+  {.section plansBathrooms}<li title="{@} Bathrooms"><i class="fas fa-bath"></i><span>{@}</span></li>{.end}
+{.equal? plansGarage true}<li title="{@} Garage"><i class="fas fa-car"></i><span><i class="fas fa-check"></i></span></li>{.or}{.end}
+{.section plansStories}<li title="{@} Stories"><i class="fas fa-sort-amount-up-alt"></i><span>{@}</span></li>{.end}
+  {.end}
+</ul>
+              </div>
+            </div>
+      {.end}
+    </div>
+  </div>
+
+  <script>
+window.customFilterSettings = {
+    'targets': [{
+        container: '#plans-directory',
+        items: '.plan',
+        settings: {
+            position: 'right',
+            align: 'left',
+            accordionDropdowns: true,
+            showCheckboxes: true, // show the styled checkboxes with options
+            showItemsCount: false,
+            keepDropdownsOpen: true,
+            keepDropdownsOpenOnInit: true, // make dropdowns opened on start but ready to close on click
+            closeOptionsOnSelect: false,
+            view: 'dropdowns',
+            mobilePanel: { // control if you want to have separate offscreen panel with filters on small screens
+                   enabled: false, // if set to false, no filter buttons on mobiles will be showed
+               },
+            filter: {
+                enabled: true,
+                category: false,
+                tag: false,
+                items: [
+                  {
+                   name: 'Area',
+                   type: 'range-slider',
+                   dimension: 'Sq Ft.',// show dimension near tooltips or inputs
+                   min: 0, //will be set according to lowest price
+                   max: 8000, //will be set according to highest price
+                   step: 100,// a step to change price
+                   showLabel: true, // show or hide name
+                   showTooltips: true,// show or hide tooltips
+                   showInputs: false,// show or hide editable inputs under slider
+                   getAttr: 'customContent.plansArea'
+               },
+                  {
+                    name: "Bedrooms",//dropdown name
+                    multiple: true,//allow to select several categories
+                    showItemsCount: false,
+                    allowedPrefSuf: "Bedrooms:",//each category starting from Local: will be showed in dropdown
+                    getAttr: 'tags'
+                },
+                {
+                    name: "Bathrooms",//dropdown name
+                    multiple: true,
+                    showItemsCount: false,
+                    getAttr: 'customContent.plansBathrooms'
+                },
+                {
+                  name: "Stories",//dropdown name
+                  multiple: true,//allow to select several categories
+                  showItemsCount: false,
+                  getAttr: 'customContent.plansStories'
+              },
+                {
+                    name: "Garage",//dropdown name
+                    multiple: false,
+                    showItemsCount: false,
+                    getAttr: 'customContent.plansGarage',
+                },
+                {
+                    name: "Category",//dropdown name
+                    multiple: true,//allow to select several categories
+                    showItemsCount: false,
+                    getAttr: 'categories'
+                },
+                {
+                    name: "Tags",//dropdown name
+                    multiple: true,//allow to select several categories
+                    showItemsCount: false,
+                    getAttr: 'tags'
+                }
+              ]
+
+            },
+            updateFilterOptions: {
+                   enabled: true, //enable options update
+                   showOptionsCounters: true, // if true - you will see a number of available items there
+                   optionsCounterWrap: '- ()', // available items number will be pasted inside circle brackets
+               },
+        }
+    }]
+};
+</script>

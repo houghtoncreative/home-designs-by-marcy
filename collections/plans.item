@@ -1,0 +1,95 @@
+<script src="/assets/jquery.popupoverlay.js"></script>
+{.section item}
+<section id="{id}" class="overlay-info">
+<div class="overlay-content-wrapper">
+<div class="image-wrapper-overlay">{.section customContent.plansImage}<img {@|image-meta} />{.end}</div>
+</div>
+</section>
+<section id="ThePlan">
+  <div id="planImage">
+     <div class="intro"><h1>{title}</h1>  <div class="sqs-block button-block sqs-block-button" data-block-type="53"><div class="sqs-block-content">
+     <div class="sqs-block-button-container--left" data-alignment="left" data-button-size="large">
+     	<a class="sqs-block-button-element--large sqs-block-button-element" data-initialized="true">Download Plans</a>
+     </div></div></div></div>
+    <div class="image-wrapper"><a class="{id}_open" href="#">{.section customContent.plansImage}<img {@|image-meta} />{.end}</a></div>
+  </div>
+  <div id="planDetails">
+    {.section customContent}
+  <table>
+    <thead>
+<tr>
+<th>Feature</th>
+<th>Details</th>
+</tr>
+</thead>
+  <tbody>
+  {.section plansArea}
+  <tr>
+  <td><i class="fas fa-expand-arrows-alt"></i>Area</td>
+  <td>{@} sq ft</td>
+  </tr>
+  {.or}{.end}
+  {.section plansBedrooms}
+  <tr>
+  <td><i class="fas fa-bed"></i>Bedrooms</td>
+  <td>{@}</td>
+  </tr>
+  {.or}{.end}
+  {.section plansBathrooms}
+  <tr>
+  <td><i class="fas fa-bath"></i>Bathrooms</td>
+  <td>{@}</td>
+  </tr>
+  {.or}{.end}
+  {.section plansMaxWidth}
+  <tr>
+  <td><i class="fas fa-arrows-alt-h"></i>Max Width</td>
+  <td>{@} Ft.</td>
+  </tr>
+  {.or}{.end}
+  {.section plansMaxDepth}
+  <tr>
+  <td><i class="fas fa-arrows-alt-v"></i>Max Depth</td>
+  <td>{@} Ft.</td>
+  </tr>
+  {.or}{.end}
+  {.section plansStories}
+  <tr>
+  <td><i class="fas fa-sort-amount-up-alt"></i>Stories</td>
+  <td>{@}</td>
+  </tr>
+  {.or}{.end}
+  <tr>
+  <td><i class="fas fa-warehouse"></i>Garage</td>
+  <td>{.equal? plansGarage true}<i class="fas fa-check"></i>{.or}<i class="fas fa-times"></i>{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-window-maximize"></i>Basement</td>
+  <td>{.equal? plansBasement true}<i class="fas fa-check"></i>{.or}<i class="fas fa-times"></i>{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-desktop"></i>Study/Flex room</td>
+  <td>{.equal? plansStudy true}<i class="fas fa-check"></i>{.or}<i class="fas fa-times"></i>{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-hand-sparkles"></i>Mud Room</td>
+  <td>{.equal? plansMudhall true}<i class="fas fa-check"></i>{.or}<i class="fas fa-times"></i>{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-store-alt"></i>Barndominium</td>
+  <td>{.equal? plansBarndominium true}<i class="fas fa-check"></i>{.or}<i class="fas fa-times"></i>{.end}</td>
+  </tr>
+  </tbody>
+  </table>
+  {.end}
+</div>
+</section>
+<script>$('#{id}').popup({
+    pagecontainer: '.Main-content',
+    escape: false,
+    blur: true,
+    scrolllock: true,
+    transition: 'all 0.3s',
+    closebutton: true,
+  });</script>
+{.end}

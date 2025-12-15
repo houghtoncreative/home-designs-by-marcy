@@ -1,0 +1,89 @@
+<script src="/assets/jquery.popupoverlay.js"></script>
+{.section item}
+<section id="{id}" class="overlay-info">
+<div class="overlay-content-wrapper">
+<div class="image-wrapper-overlay"><img {@|image-meta} /></div>
+</div>
+</section>
+<section id="ThePlan">
+  <div id="planImage">
+     <div class="intro"><h1>{title}</h1>  {@|product-checkout}</div>
+    <div class="image-wrapper"><a class="{id}_open" href="#"><img {@|image-meta} /></a></div>
+  </div>
+  <div id="planDetails">
+  <table>
+    <thead>
+<tr>
+<th>Feature</th>
+<th>Details</th>
+</tr>
+</thead>
+  <tbody>
+  <tr>
+  <td><i class="fas fa-expand-arrows-alt"></i></i>Area</td>
+  <td>{.repeated section variants}{.section attributes}{Area} sq Ft.{.end}{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-arrows-alt-h"></i>Max Width</td>
+  <td>{.repeated section variants}{.section attributes}{MaxWidth} Ft.{.end}{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-arrows-alt-h"></i>Max Depth</td>
+  <td>{.repeated section variants}{.section attributes}{MaxDepth} Ft.{.end}{.end}</td>
+  </tr>
+  <tr>
+  <td><i class="fas fa-bed"></i>Bedrooms</td>
+  <td>{.repeated section variants}{.section attributes}{Bedrooms}{.end}{.end}</td>
+  </tr>
+
+  <tr>
+  <td><i class="fas fa-bath"></i>Bathrooms</td>
+  <td>{.repeated section variants}{.section attributes}{Bathrooms}{.end}{.end}</td>
+  </tr>
+  <tr>
+    <td><i class="fas fa-sort-amount-up-alt"></i>Stories</td>
+  <td>{.repeated section variants}{.section attributes}{Stories}{.end}{.end}</td>
+  </tr>
+<tr>
+<td><i class="fas fa-warehouse"></i>Garage</td>
+{.repeated section categories}{.equal? "Garage"}<td><i class="fas fa-check"></i></td>{.end}{.end}
+<td class="{.repeated section categories}{.equal? "Garage"}hide{.end}{.end}"><i class="fas fa-times"></i></td>
+</tr>
+<tr>
+  <td><i class="fas fa-window-maximize"></i>Basement</td>
+{.repeated section categories}{.equal? "Basement"}<td><i class="fas fa-check"></i></td>{.end}{.end}
+<td class="{.repeated section categories}{.equal? "Basement"}hide{.end}{.end}"><i class="fas fa-times"></i></td>
+</tr>
+<tr>
+    <td><i class="fas fa-desktop"></i>Study/Flex room</td>
+{.repeated section categories}{.equal? "Study"}<td><i class="fas fa-check"></i></td>{.end}{.end}
+<td class="{.repeated section categories}{.equal? "Study"}hide{.end}{.end}"><i class="fas fa-times"></i></td>
+</tr>
+<tr>
+    <td><i class="fas fa-hand-sparkles"></i>Mud Room</td>
+{.repeated section categories}{.equal? "MudRoom"}<td><i class="fas fa-check"></i></td>{.end}{.end}
+<td class="{.repeated section categories}{.equal? "MudRoom"}hide{.end}{.end}"><i class="fas fa-times"></i></td>
+</tr>
+<tr>
+    <td><i class="fas fa-store-alt"></i>Barndominium</td>
+{.repeated section categories}{.equal? "Barndominium"}<td><i class="fas fa-check"></i></td>{.end}{.end}
+<td class="{.repeated section categories}{.equal? "Barndominium"}hide{.end}{.end}"><i class="fas fa-times"></i></td>
+</tr>
+  </tbody>
+  </table>
+</div>
+</section>
+{.section body}
+<section class="ProductItem-additional">
+  {@}
+</section>
+{.end}
+<script>$('#{id}').popup({
+    pagecontainer: '.Main-content',
+    escape: false,
+    blur: true,
+    scrolllock: true,
+    transition: 'all 0.3s',
+    closebutton: true,
+  });</script>
+{.end}

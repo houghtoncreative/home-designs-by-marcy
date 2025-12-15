@@ -62,9 +62,9 @@
           <div data-nc-container="top-left">
 
             <div class="Header-search" data-nc-element="search">
-              <form class="Header-search-form" action="/search" method="get" role="search">
-                <input class="Header-search-form-input" name="q" type="text" spellcheck="false" value="" autocomplete="off" placeholder="{localizedStrings.search}" aria-label="{localizedStrings.search}"/>
-                <button class="Header-search-form-submit" type="submit" data-test="template-search" aria-label="{localizedStrings.search}">
+              <form class="Header-search-form" action="/search" method="get">
+                <input class="Header-search-form-input" name="q" type="text" spellcheck="false" value="" autocomplete="off" placeholder="{localizedStrings.search}" />
+                <button class="Header-search-form-submit" type="submit" data-test="template-search">
                   <svg class="Icon Icon--search--small" viewBox="0 0 15 15">
                     <use xlink:href="/assets/ui-icons.svg#search-icon--small"></use>
                   </svg>
@@ -116,13 +116,7 @@
               <a href="/" class="Header-branding" data-nc-element="branding" data-content-field="site-title">
                 {.section website}
                   {.section logoImageUrl}
-                    {#  sizes is set to max width for tweak-header-branding-logo-width  }
-                    {.ctx @image src=logoImageUrl alt=siteTitle}
-                    {@image|apply/apply-image-component.block/
-                      /class=Header-branding-logo/
-                      /sizes=320px/
-                      /elementTiming=wf-header-branding-logo/
-                    }
+                    <img src="{logoImageUrl}?format=1500w" alt="{siteTitle}" class="Header-branding-logo" />
                   {.or}
                     {siteTitle}
                   {.end}
